@@ -1,0 +1,24 @@
+name: Assemble PriceScouting site
+on: workflow_dispatch
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble index.html and index.css
+        run: |
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/2247b2f62541d98f35da02f40ae10faf2dbd9811/idxp1.txt > index.html
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/dff81e3d56438407e13b798fbaa00c3f7e71abfa/idxp2.txt >> index.html
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/9371ad73f17dc2d82536a733a37ba3fd70a68b3e/idxp3.txt >> index.html
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/d7094533819c69c8b7258f5169043ac5ff70ab19/idxp4.txt >> index.html
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/36b5b8448fb7e70b9bfabd098aab4cb39ab104bc/idxp5.txt >> index.html
+          curl -s https://gist.githubusercontent.com/redlobsters1990-lab/6c727d01a4dd76ff773399345b2db0b3/raw/9a36818a4ffd30b8a064b6bf63bc79acfa3184af/idx.css > index.css
+      - name: Commit
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add index.html index.css
+          git diff --staged --quiet || git commit -m "feat: add homepage and index.css"
+          git push
